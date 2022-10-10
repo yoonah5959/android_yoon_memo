@@ -1,4 +1,4 @@
-package heenu.moon.yoon_memo_android.ui.theme
+package heenu.moon.yoon_memo_android.presentation.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes

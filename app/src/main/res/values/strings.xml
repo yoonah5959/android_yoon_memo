@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">yoon_memo_android</string>
     <string name="memo">메모</string>
+    <string name="add_memo">메모추가</string>
 </resources>

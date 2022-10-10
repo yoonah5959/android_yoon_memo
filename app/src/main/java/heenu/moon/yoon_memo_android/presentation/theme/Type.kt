@@ -1,4 +1,4 @@
-package heenu.moon.yoon_memo_android.ui.theme
+package heenu.moon.yoon_memo_android.presentation.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
