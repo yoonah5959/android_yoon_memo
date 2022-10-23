@@ -1,6 +1,5 @@
 package heenu.moon.yoon_memo_android.presentation.ui.home
 
-import android.icu.text.CaseMap
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -29,6 +28,7 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     Scaffold(
+        backgroundColor = MaterialTheme.colors.background,
         topBar = { HomeTopBar(viewModel) },
         content = { padding ->
             ContentNav(padding, viewModel)
@@ -42,6 +42,7 @@ fun HomeTopBar(viewModel: HomeViewModel) {
     TopAppBar(
         title = { Text(stringResource(id = R.string.memo)) },
         backgroundColor = MaterialTheme.colors.background,
+        elevation = 0.dp,
         navigationIcon = {
             IconButton(
                 onClick = { /*TODO*/ }) {
@@ -52,7 +53,15 @@ fun HomeTopBar(viewModel: HomeViewModel) {
             }
         },
         actions = {
-            Switch(checked = covered, onCheckedChange = viewModel::homeCoveredClick)
+            Switch(
+                colors = SwitchDefaults.colors(
+                    checkedThumbColor = MaterialTheme.colors.primary,
+                    checkedTrackColor = MaterialTheme.colors.primary,
+                    uncheckedThumbColor = MaterialTheme.colors.surface,
+                    uncheckedTrackColor = MaterialTheme.colors.onSurface,
+                ),
+                checked = covered, onCheckedChange = viewModel::homeCoveredClick
+            )
         }
     )
 }
@@ -72,58 +81,70 @@ fun MemoList(viewModel: HomeViewModel) {
     val scrollState = rememberLazyListState()
     val list = viewModel.memoList.collectAsState().value
     LazyColumn(
-        modifier = Modifier.padding(top = 10.dp),
         state = scrollState
     ) {
         itemsIndexed(list, key = { index, item ->
             index
         }) { index, item ->
-            MemoCell(index, item)
+            MemoItem(item, index == list.size - 1)
         }
     }
 }
 
 @Composable
-fun MemoCell(index: Int, item: Memo) {
-    Column(modifier =Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 20.dp)) {
-//        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-//            Text(item.category, color = MaterialTheme.colors.secondary) // todo 카테고리 글자수제안도 둬야할듯
-//            Text(text = item.date, color = MaterialTheme.colors.secondary)
-//        }
-        Text(modifier = Modifier.padding(3.dp),
-            text =
-        when(index){
-            0 -> "MaterialTheme.typography.h1"
-            1-> "MaterialTheme.typography.h2"
-            2 -> "MaterialTheme.typography.h3 "
-            3 -> "MaterialTheme.typography.h4"
-            4 -> "MaterialTheme.typography.h5"
-            5 -> "MaterialTheme.typography.h6"
-            6 -> "MaterialTheme.typography.subtitle1"
-            7 -> "MaterialTheme.typography.subtitle2"
-            8 -> "MaterialTheme.typography.body1"
-            9 -> "MaterialTheme.typography.body2"
-            10 -> "MaterialTheme.typography.button"
-            11 -> "MaterialTheme.typography.caption"
-            else -> "MaterialTheme.typography.overline"
-        }, maxLines = 1, overflow = TextOverflow.Ellipsis, style = MaterialTheme.typography.body1)
-        Text(text = item.content, maxLines = 1, overflow = TextOverflow.Ellipsis, style =
-            when(index){
-                0 -> MaterialTheme.typography.h1
-                1-> MaterialTheme.typography.h2
-                2 -> MaterialTheme.typography.h3
-                3 -> MaterialTheme.typography.h4
-                4 -> MaterialTheme.typography.h5
-                5 -> MaterialTheme.typography.h6
-                6 -> MaterialTheme.typography.subtitle1
-                7 -> MaterialTheme.typography.subtitle2
-                8 -> MaterialTheme.typography.body1
-                9 -> MaterialTheme.typography.body2
-                10 -> MaterialTheme.typography.button
-                11 -> MaterialTheme.typography.caption
-                else -> MaterialTheme.typography.overline
-            }
+fun MemoItem(item: Memo, isEnd: Boolean) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 0.dp, bottom = 12.dp, start = 24.dp, end = 24.dp)
+    ) {
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 4.dp), horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            // category
+            Text(
+                item.category,
+                color = MaterialTheme.colors.secondary,
+                style = MaterialTheme.typography.body2,
+                modifier = Modifier.padding(top = 6.dp)
+            ) //todo 카테고리 글자수제안도 둬야할듯
+
+            // date
+            Text(
+                text = item.date, color = MaterialTheme.colors.secondary,
+                style = MaterialTheme.typography.body2
+            )
+        }
+
+        // title
+        Text(
+            modifier = Modifier.padding(bottom = 2.dp),
+            text = item.title,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            style = MaterialTheme.typography.subtitle1
         )
+
+        // content
+        Text(
+            text = item.content,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            color = MaterialTheme.colors.secondary
+        )
+
+        // divider
+        if (!isEnd) {
+            Divider(
+                Modifier.padding(top = 12.dp),
+                color = MaterialTheme.colors.onSecondary,
+                thickness = 0.5.dp
+            )
+        }
+
     }
 }
 
@@ -158,8 +179,8 @@ fun CoveredContent() {
     }
 }
 
-@Preview(showBackground = true)
 @Composable
+@Preview(showSystemUi = true, showBackground = true)
 fun DefaultPreview() {
     Yoon_memo_androidTheme {
         HomeScreen()

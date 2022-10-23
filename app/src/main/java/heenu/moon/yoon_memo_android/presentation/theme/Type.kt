@@ -1,6 +1,7 @@
 package heenu.moon.yoon_memo_android.presentation.theme
 
 import androidx.compose.material.Typography
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -77,7 +78,7 @@ val SubTitle2 = TextStyle(
 /** main content text style  */
 val Body1 = TextStyle(
     fontFamily = Pretendard,
-    fontWeight = FontWeight.Medium,
+    fontWeight = FontWeight.Normal,
     fontSize = 16.sp,
     letterSpacing = 0.5.sp
 )
@@ -126,3 +127,7 @@ val Typography = Typography(
     caption = Caption,
     overline = OverLine
 )
+
+fun myTypography() = Typography
+
+internal val LocalTypography = staticCompositionLocalOf { myTypography() }

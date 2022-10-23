@@ -20,3 +20,5 @@ val Gray8 = Color(0xFF353A3F)
 val Gray9 = Color(0xFF222529)
 
 val Black = Color(0xFF040715)
+
+val DarkGrey = Color(0xFF121212)

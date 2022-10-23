@@ -6,13 +6,14 @@ import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.DarkGray
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val DarkColorPalette = darkColors(
     primary = Yellow300,
     onPrimary = White,
     secondary = Gray5,
-    onSecondary = White,
+    onSecondary = Gray7,
     surface = Gray9,
     onSurface = White,
     background = Gray9,
